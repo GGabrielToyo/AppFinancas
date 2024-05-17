@@ -1,0 +1,61 @@
+{
+    "info": [
+        "No_has_more_data"
+    ],
+    "despesas": [
+        {
+            "id": 1,
+            "descricao": "Mercado",
+            "valor": 1000,
+            "data": "24/03/2023"
+        },
+        {
+            "id": 2,
+            "descricao": "Farmacia",
+            "valor": 32.54,
+            "data": "15/04/2023"
+        },
+        {
+            "id": 3,
+            "descricao": "Restaurante",
+            "valor": 169.50,
+            "data": "11/05/2023"
+        },
+        {
+            "id": 4,
+            "descricao": "Material de obra",
+            "valor": 1500,
+            "data": "28/05/2023"
+        },
+        {
+            "id": 5,
+            "descricao": "Pneu do carro",
+            "valor": 350,
+            "data": "12/12/2023"
+        },
+        {
+            "id": 6,
+            "descricao": "Combustivel",
+            "valor": 120,
+            "data": "20/12/2023"
+        },
+        {
+            "id": 7,
+            "descricao": "Material escolar",
+            "valor": 200,
+            "data": "21/01/2024"
+        },
+        {
+            "id": 8,
+            "descricao": "restaurante",
+            "valor": 140,
+            "data": "25/02/2024"
+        },
+        {
+            "id": 9,
+            "descricao": "Farmacia",
+            "valor": 50,
+            "data": "12/03/2024"
+        }
+    ]
+}

@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather } from '@expo/vector-icons';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { ScrollView } from 'react-native-gesture-handler';
 
-export default function App() {
+export default function Home() {
     let [fontsLoaded] = useFonts({
         Montserrat_400Regular,
         Montserrat_700Bold
@@ -14,39 +14,36 @@ export default function App() {
         return <Text>Carregando...</Text>;
     } else {
         return (
-            <View style={styles.container}>
-                <StatusBar style="auto" />
+            <ScrollView>
+                <View style={styles.container}>
+                    <StatusBar style="auto" />
 
-                <LinearGradient
-                    colors={['rgba(73, 96, 249, 1)', 'rgba(25, 55, 254, 1)']}
-                    style={styles.headerGradient}>
-                    <View style={styles.row}>
-                        <Feather name='menu' size={24} color="white"></Feather>
-                        <Image
-                            style={styles.imgProfile} source={{ uri: 'https://static.vecteezy.com/ti/vetor-gratis/t2/2318271-icone-do-perfil-do-usuario-vetor.jpg' }}>
-
-                        </Image>
-                    </View>
-                    <Text style={styles.txtWelcome}>Bem vindo(a),
-                        {'\n'}
-                        usuário.</Text>
-                </LinearGradient>
-
-                <View style={{ width: '100%', alignItems: 'center' }}>
-                    <View style={styles.resumoSaldo}>
-                        <Text style={{ color: '#3a3a3a', fontSize: 16, fontFamily: 'Montserrat_400Regular' }}>Seu saldo total</Text>
-                        <Text style={{ color: '#2d99ff', fontSize: 30, fontFamily: 'Montserrat_700Bold' }}>R$ 8.500,00</Text>
-                    </View>
-                </View>
-
-                <View style={styles.verifyAccount}>
-                    <LinearGradient colors={['rgba(73, 96, 249, 1)', 'rgba(20, 51, 255, 1)']}
-                        style={styles.accountGradient}>
-                        <Text style={{ color: '#fff', fontFamily: 'Montserrat_400Regular', fontSize: 19 }}>Verifique suas contas bancárias</Text>
+                    <LinearGradient
+                        colors={['rgba(73, 96, 249, 1)', 'rgba(25, 55, 254, 1)']}
+                        style={styles.headerGradient}>
+                        <View style={styles.row}>
+                        </View>
+                        <Text style={styles.txtWelcome}>Bem vindo(a),
+                            {'\n'}
+                            usuário.</Text>
                     </LinearGradient>
-                </View>
 
-            </View>
+                    <View style={{ width: '100%', alignItems: 'center' }}>
+                        <View style={styles.resumoSaldo}>
+                            <Text style={{ color: '#3a3a3a', fontSize: 16, fontFamily: 'Montserrat_400Regular' }}>Seu saldo total</Text>
+                            <Text style={{ color: '#2d99ff', fontSize: 30, fontFamily: 'Montserrat_700Bold' }}>R$ 8.500,00</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.verifyAccount}>
+                        <LinearGradient colors={['rgba(73, 96, 249, 1)', 'rgba(20, 51, 255, 1)']}
+                            style={styles.accountGradient}>
+                            <Text style={{ color: '#fff', fontFamily: 'Montserrat_400Regular', fontSize: 19 }}>Verifique seus gastos</Text>
+                        </LinearGradient>
+                    </View>
+
+                </View>
+            </ScrollView>
         );
     }
 }
@@ -60,7 +57,7 @@ const styles = StyleSheet.create({
     headerGradient: {
         width: '100%',
         height: '40%',
-        padding: '20',
+        padding: 20,
         borderBottomLeftRadius: 55,
         borderBottomRightRadius: 55,
     },
