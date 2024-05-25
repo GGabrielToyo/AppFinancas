@@ -2,13 +2,22 @@ import React from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { Despesa } from "../interfaces/despesa";
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import { format, addDays } from 'date-fns';
 
 
-export function DespesaItem({ descricao, valor, data }: Despesa) {
+export function DespesaItem(despesa: Despesa) {
     let [fontsLoaded] = useFonts({
         Montserrat_400Regular,
         Montserrat_700Bold
     });
+
+    function formatValor(valor: number) {
+        return '- R$ ' + valor.toFixed(2).replace('.', ',');
+    }
+
+    function formatData(data: Date | string) {
+        return format(addDays(data, 1), 'dd/MM/yyyy');
+    }
 
     if (!fontsLoaded) {
         return <Text>Carregando...</Text>;
@@ -16,11 +25,11 @@ export function DespesaItem({ descricao, valor, data }: Despesa) {
         return (
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.descricao}>{descricao}</Text>
-                    <Text style={styles.data}>{data}</Text>
+                    <Text style={styles.descricao}>{despesa.descricao}</Text>
+                    <Text style={styles.data}>{formatData(despesa.data)}</Text>
                 </View>
 
-                <Text style={styles.valor}>{valor}</Text>
+                <Text style={styles.valor}>{formatValor(despesa.valor)}</Text>
             </View>
         );
     }

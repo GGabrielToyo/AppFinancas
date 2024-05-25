@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
-import { ScrollView } from 'react-native-gesture-handler';
+import { GraficoBarras } from '../components/GraficoBarras';
+import AddDespesaModal from '../components/AddDespesaModal';
+import { useState } from 'react';
 
 export default function Home() {
     let [fontsLoaded] = useFonts({
@@ -10,40 +12,59 @@ export default function Home() {
         Montserrat_700Bold
     });
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    //Faz a query no bd para pegar o saldo do usuário
+    function getSaldo() {
+        return '8500,00';
+    }
+
+    //Faz a query no bd para pegar o nome do usuário
+    function getNomeUsuario() {
+        return 'usuário';
+    }
+
     if (!fontsLoaded) {
         return <Text>Carregando...</Text>;
     } else {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <StatusBar style="auto" />
+            <View style={styles.container}>
+                <StatusBar style="auto" />
 
-                    <LinearGradient
-                        colors={['rgba(73, 96, 249, 1)', 'rgba(25, 55, 254, 1)']}
-                        style={styles.headerGradient}>
-                        <View style={styles.row}>
-                        </View>
-                        <Text style={styles.txtWelcome}>Bem vindo(a),
-                            {'\n'}
-                            usuário.</Text>
-                    </LinearGradient>
+                <LinearGradient
+                    colors={['rgba(73, 96, 249, 1)', 'rgba(25, 55, 254, 1)']}
+                    style={styles.headerGradient}>
 
-                    <View style={{ width: '100%', alignItems: 'center' }}>
-                        <View style={styles.resumoSaldo}>
-                            <Text style={{ color: '#3a3a3a', fontSize: 16, fontFamily: 'Montserrat_400Regular' }}>Seu saldo total</Text>
-                            <Text style={{ color: '#2d99ff', fontSize: 30, fontFamily: 'Montserrat_700Bold' }}>R$ 8.500,00</Text>
+                    <Text style={styles.txtWelcome}>Bem vindo(a),
+                        {'\n'}
+                        {getNomeUsuario()}.</Text>
+                </LinearGradient>
+
+                <View style={{ width: '100%', alignItems: 'center', }}>
+                    <View style={styles.resumoSaldo}>
+                        <View style={{ padding: 20 }}>  
+                            <Text style={styles.txtLabel}>Seu saldo total</Text>
+                            <Text style={styles.txtSaldo}>R$ {getSaldo()}</Text>
                         </View>
+
+                        <GraficoBarras />
                     </View>
+                </View>
 
-                    <View style={styles.verifyAccount}>
+                <TouchableOpacity style={styles.addDespesa} onPress={() => setModalVisible(true)}>
+                    <View>
                         <LinearGradient colors={['rgba(73, 96, 249, 1)', 'rgba(20, 51, 255, 1)']}
                             style={styles.accountGradient}>
-                            <Text style={{ color: '#fff', fontFamily: 'Montserrat_400Regular', fontSize: 19 }}>Verifique seus gastos</Text>
+                            <Text style={{ color: '#fff', fontFamily: 'Montserrat_400Regular', fontSize: 19 }}>Adicionar despesa</Text>
                         </LinearGradient>
                     </View>
+                </TouchableOpacity>
 
-                </View>
-            </ScrollView>
+                <AddDespesaModal
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)} />
+
+            </View>
         );
     }
 }
@@ -52,14 +73,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f7f7',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: '20%',
     },
     headerGradient: {
         width: '100%',
         height: '40%',
         padding: 20,
-        borderBottomLeftRadius: 55,
-        borderBottomRightRadius: 55,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
     },
     imgProfile: {
         width: 50,
@@ -79,20 +101,29 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat_400Regular',
         padding: 20,
     },
+    txtLabel: {
+        color: '#3a3a3a',
+        fontSize: 16,
+        fontFamily: 'Montserrat_400Regular'
+    },
+    txtSaldo: {
+        color: '#2d99ff',
+        fontSize: 30,
+        fontFamily: 'Montserrat_700Bold'
+    },
     resumoSaldo: {
         backgroundColor: '#fff',
         width: '80%',
         height: 250,
         top: -50,
         borderRadius: 30,
-        padding: 20,
 
         shadowColor: '#000',
         shadowOpacity: 0.5,
         shadowRadius: 8,
         elevation: 5,
     },
-    verifyAccount: {
+    addDespesa: {
         width: '80%',
         height: '20%',
     },
@@ -103,7 +134,7 @@ const styles = StyleSheet.create({
         padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
 
         shadowColor: '#000',
         shadowOpacity: 0.4,

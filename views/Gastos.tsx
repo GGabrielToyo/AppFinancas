@@ -1,13 +1,12 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import { DespesaItem } from "../components/DespesaItem";
-import { Despesa } from "../interfaces/despesa";
-import axios from "axios";
-
+import { despesasList } from "../data/despesasList";
+import * as SQLite from 'expo-sqlite';
 
 export default function Gastos() {
     let [fontsLoaded] = useFonts({
@@ -15,39 +14,23 @@ export default function Gastos() {
         Montserrat_700Bold
     });
 
-    const [list, setList] = useState<Despesa[]>([]);
-    const [page, setPage] = useState(1);
-    const [hasMoreData, setHasMoreData] = useState(true);
-
-    async function getDespesas() {
-        if (!hasMoreData) return;
-
-        const { data } = await axios.get<Despesa[]>("http://localhost:3000/despesas");
-        const info = await axios.get("http://localhost:3000/info");
-
-        if (data) {
-            const current = data;
-            setList(prev => [...prev, ...current]);
-
-            if (info.data === "has_more") {
-                setPage(page + 1);
-            } else {
-                setHasMoreData(false);
-            }
-        }
-        console.log(data);
-    }
 
     function renderItem({ item }) {
-        return <DespesaItem {...item} />
+        return <DespesaItem {...item} />  
     }
 
+    //A partir da lista de despesas, faz a soma delas
     function somarDespesas() {
         let total = 0;
-        list.forEach((despesa) => {
+        despesasList.forEach((despesa) => {
             total += despesa.valor;
         });
-        return total;
+        return '- R$ ' + total.toFixed(2).replace('.', ',');
+    }
+
+    //Busca no bd as despesas do usuário
+    function getDespesas() {
+
     }
 
     if (!fontsLoaded) {
@@ -62,8 +45,8 @@ export default function Gastos() {
                     style={styles.headerGradient}>
                     <View style={styles.row}>
                     </View>
-                    <Text style={styles.txtWelcome}>Suas despesas totais.</Text>
-                    <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'Montserrat_700Bold' }}>-R$ {somarDespesas()}</Text>
+                    <Text style={styles.txtDespesas}>Suas despesas totais.</Text>
+                    <Text style={styles.txtDespesasTotais}>{somarDespesas()}</Text>
                 </LinearGradient>
 
                 <LinearGradient
@@ -75,18 +58,12 @@ export default function Gastos() {
                     </TextInput>
 
                     <FlatList
-                        keyExtractor={item => item.id}
-                        data={list}
+                        style={styles.list}
+                        keyExtractor={item => item.descricao}
+                        data={despesasList}
                         renderItem={renderItem}
-                        onEndReached={getDespesas}
-                        onEndReachedThreshold={0.1}
-                        ListFooterComponent={<ActivityIndicator />}
                     />
-
-
                 </LinearGradient>
-
-
             </View>
         );
     }
@@ -95,6 +72,8 @@ export default function Gastos() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
         backgroundColor: '#f7f7f7',
         alignItems: 'center'
     },
@@ -113,22 +92,16 @@ const styles = StyleSheet.create({
     },
     bottomGradient: {
         width: '100%',
-        height: '100%',
+        flex: 1,
         padding: 20,
         marginTop: 20,
         borderTopLeftRadius: 55,
         borderTopRightRadius: 55,
 
-
         shadowColor: '#000',
         shadowOpacity: 0.5,
         shadowRadius: 8,
         elevation: 5,
-    },
-    imgProfile: {
-        width: 50,
-        height: 50,
-        borderRadius: 10,
     },
     row: {
         flexDirection: 'row',
@@ -136,11 +109,16 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
     },
-    txtWelcome: {
+    txtDespesas: {
         color: 'white',
         fontSize: 20,
         fontFamily: 'Montserrat_400Regular',
         padding: 20,
+    },
+    txtDespesasTotais: {
+        color: '#fff',
+        fontSize: 30,
+        fontFamily: 'Montserrat_700Bold'
     },
     resumoSaldo: {
         backgroundColor: '#fff',
@@ -182,4 +160,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 20,
     },
+    list: {
+        flex: 1,
+    }
 });

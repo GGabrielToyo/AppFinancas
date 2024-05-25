@@ -6,7 +6,7 @@ const Stack = createNativeStackNavigator();
 
 export default function StackRoutes() {
     return (
-        <Stack.Navigator screenOptions={{ title: '' }}>
+        <Stack.Navigator screenOptions={{ title: ' ', headerShown: false}}>
             <Stack.Screen
                 name="_Home"
                 component={Perfil}
