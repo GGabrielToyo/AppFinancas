@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import { DespesaItem } from "../components/DespesaItem";
-import { despesasList } from "../data/despesasList";
-import * as SQLite from 'expo-sqlite';
+import { fetchDespesas } from "../service/despesaService";
+import { Despesa } from "../interfaces/despesa";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Gastos() {
     let [fontsLoaded] = useFonts({
@@ -14,24 +15,31 @@ export default function Gastos() {
         Montserrat_700Bold
     });
 
+    const [despesas, setDespesas] = useState<Despesa[]>([]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getDespesas();
+        }, [])
+    );
 
     function renderItem({ item }) {
-        return <DespesaItem {...item} />  
+        return <DespesaItem {...item} />
     }
 
-    //A partir da lista de despesas, faz a soma delas
+    async function getDespesas() {
+        const data = await fetchDespesas();
+        setDespesas(data);
+    }
+
     function somarDespesas() {
         let total = 0;
-        despesasList.forEach((despesa) => {
+        despesas.forEach((despesa) => {
             total += despesa.valor;
         });
         return '- R$ ' + total.toFixed(2).replace('.', ',');
     }
 
-    //Busca no bd as despesas do usuário
-    function getDespesas() {
-
-    }
 
     if (!fontsLoaded) {
         return <Text>Carregando...</Text>;
@@ -59,8 +67,8 @@ export default function Gastos() {
 
                     <FlatList
                         style={styles.list}
-                        keyExtractor={item => item.descricao}
-                        data={despesasList}
+                        keyExtractor={(item) => item.id.toString()}
+                        data={despesas}
                         renderItem={renderItem}
                     />
                 </LinearGradient>

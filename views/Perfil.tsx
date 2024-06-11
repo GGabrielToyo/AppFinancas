@@ -3,6 +3,10 @@ import { Button, StyleSheet, Switch, Text, TextInput, View } from "react-native"
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 import { useState } from "react";
 import { SeparatorItem } from "../components/SeparatorItem";
+import { Usuario } from "../interfaces/usuario";
+import { useFocusEffect } from "@react-navigation/native";
+import React from "react";
+import { getUsuario, updateUsuario } from "../service/usuarioService";
 
 export default function Perfil() {
     let [fontsLoaded] = useFonts({
@@ -14,9 +18,41 @@ export default function Perfil() {
     const [email, setEmail] = useState('');
     const [endereco, setEndereco] = useState('');
     const [renda, setRenda] = useState('');
+    const [usuario, setUsuario] = useState<Usuario>();
 
     const [isEditing, setIsEditing] = useState(false);
     const toggleSwitch = () => setIsEditing(previousState => !previousState);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getInfoUsuario();
+        }, [])
+    );
+
+    function updateInfos(user: Usuario) {
+        setNome(user.nome);
+        setEmail(user.email);
+        setEndereco(user.endereco);
+        setRenda(user.rendaMensal.toString());
+    }
+
+    async function getInfoUsuario() {
+        const user = await getUsuario();
+        setUsuario(user[0]);
+        updateInfos(user[0]);
+    }
+
+    async function editarUsuario() {
+        const user: Usuario = {
+            nome: nome,
+            email: email,
+            endereco: endereco,
+            rendaMensal: Number(renda)
+        };
+
+        const updateUser = await updateUsuario(usuario.id, user);
+        updateInfos(updateUser);
+    }
 
     if (!fontsLoaded) {
         return <Text>Carregando...</Text>;
@@ -47,6 +83,14 @@ export default function Perfil() {
                             onValueChange={toggleSwitch}
                             value={isEditing}
                         />
+                        <View style={{ marginLeft: 5 }}>
+                            <Button
+                                title="Salvar"
+                                onPress={editarUsuario}
+                                disabled={!isEditing}
+                            />
+                        </View>
+
                     </View>
                 </LinearGradient>
 
@@ -139,7 +183,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     containerEdicao: {
-        width: '70%',
+        width: '80%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',

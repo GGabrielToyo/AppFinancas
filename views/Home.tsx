@@ -5,6 +5,12 @@ import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-googl
 import { GraficoBarras } from '../components/GraficoBarras';
 import AddDespesaModal from '../components/AddDespesaModal';
 import { useState } from 'react';
+import { getUsuario } from '../service/usuarioService';
+import { Usuario } from '../interfaces/usuario';
+import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
+import { getDespesas } from '../service/despesaService';
+
 
 export default function Home() {
     let [fontsLoaded] = useFonts({
@@ -13,15 +19,32 @@ export default function Home() {
     });
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [usuario, setUsuario] = useState<Usuario>();
+    const [despesas, setDespesas] = useState<number>();
 
-    //Faz a query no bd para pegar o saldo do usuário
-    function getSaldo() {
-        return '8500,00';
+    useFocusEffect(
+        React.useCallback(() => {
+            getInfoUsuario();
+            getInfoDespesas();
+        }, [])
+    );
+
+    async function getInfoUsuario() {
+        const user = await getUsuario();
+        setUsuario(user[0]);
     }
 
-    //Faz a query no bd para pegar o nome do usuário
-    function getNomeUsuario() {
-        return 'usuário';
+    async function getInfoDespesas() {
+        const despesas = await getDespesas();
+        setDespesas(despesas);
+    }
+
+    function calcularSaldo(): string {
+        if (despesas > usuario.rendaMensal) {
+            return '- R$ ' + (despesas - usuario.rendaMensal).toFixed(2).replace('.', ',');
+        } else {
+            return ' R$ ' + (usuario.rendaMensal - despesas).toFixed(2).replace('.', ',');
+        }
     }
 
     if (!fontsLoaded) {
@@ -37,14 +60,14 @@ export default function Home() {
 
                     <Text style={styles.txtWelcome}>Bem vindo(a),
                         {'\n'}
-                        {getNomeUsuario()}.</Text>
+                        {usuario ? usuario.nome : 'Carregando...'}.</Text>
                 </LinearGradient>
 
                 <View style={{ width: '100%', alignItems: 'center', }}>
                     <View style={styles.resumoSaldo}>
-                        <View style={{ padding: 20 }}>  
+                        <View style={{ padding: 20 }}>
                             <Text style={styles.txtLabel}>Seu saldo total</Text>
-                            <Text style={styles.txtSaldo}>R$ {getSaldo()}</Text>
+                            <Text style={styles.txtSaldo}>{usuario ? calcularSaldo() : 'Carregando...'}</Text>
                         </View>
 
                         <GraficoBarras />
@@ -62,7 +85,11 @@ export default function Home() {
 
                 <AddDespesaModal
                     visible={modalVisible}
-                    onClose={() => setModalVisible(false)} />
+                    onClose={() => {
+                        getInfoDespesas();
+                        setModalVisible(false);
+                    }}
+                />
 
             </View>
         );

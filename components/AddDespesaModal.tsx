@@ -3,7 +3,8 @@ import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-googl
 import DatePickerComponent from '../components/DatePicker';
 import { useState } from "react";
 import { Despesa } from "../interfaces/despesa";
-import { despesasList } from "../data/despesasList";
+import { addDespesa } from "../service/despesaService";
+import { addDays, format } from 'date-fns';
 
 
 interface CustomModalProps {
@@ -21,15 +22,29 @@ export default function AddDespesaModal({ visible, onClose }: CustomModalProps) 
     const [valor, setValor] = useState('');
     const [data, setData] = useState(new Date());
 
-    function salvarDespesa() {
+    function formatDate(data: Date | string) {
+        if (format(data, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')) {
+            return format(data, 'yyyy-MM-dd');
+        } else {
+            return format(addDays(data, 1), 'yyyy-MM-dd');
+        }
+    }
+
+    function limpaDados(): void {
+        setDescricao('');
+        setValor('');
+        setData(new Date());
+    }
+
+    async function salvarDespesa() {
         const despesa: Despesa = {
             descricao: descricao,
             valor: parseFloat(valor),
-            data: data.toISOString()
+            data: formatDate(data),
+
         };
-        //Salvar a despesa no bd
-        console.log(despesa);
-        despesasList.push(despesa);
+        await addDespesa(despesa)
+        limpaDados();
         onClose();
     }
 
