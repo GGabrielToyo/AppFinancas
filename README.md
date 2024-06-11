@@ -12,9 +12,9 @@ Este comando roda npx expo start + json-server db.json
 
 ## 🛠️ Construído com
 
-* [Expo]([http://www.dropwizard.io/1.0.2/docs/](https://docs.expo.dev/)) - O framework mobile usado
+* [Expo](https://docs.expo.dev/) - O framework mobile usado
 * [json-server](https://www.npmjs.com/package/json-server) - Simulador de backEnd + banco de dados
 
 ## ✒️ Autores
 
-* **Gabriel Alves Toyo** - [umdesenvolvedor](https://github.com/GGabrielToyo/)
+* **Gabriel Alves Toyo** - [desenvolvedor](https://github.com/GGabrielToyo/)
