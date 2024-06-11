@@ -1,61 +1,55 @@
 {
-    "info": [
-        "No_has_more_data"
-    ],
-    "despesas": [
-        {
-            "id": 1,
-            "descricao": "Mercado",
-            "valor": 1000,
-            "data": "24/03/2023"
-        },
-        {
-            "id": 2,
-            "descricao": "Farmacia",
-            "valor": 32.54,
-            "data": "15/04/2023"
-        },
-        {
-            "id": 3,
-            "descricao": "Restaurante",
-            "valor": 169.50,
-            "data": "11/05/2023"
-        },
-        {
-            "id": 4,
-            "descricao": "Material de obra",
-            "valor": 1500,
-            "data": "28/05/2023"
-        },
-        {
-            "id": 5,
-            "descricao": "Pneu do carro",
-            "valor": 350,
-            "data": "12/12/2023"
-        },
-        {
-            "id": 6,
-            "descricao": "Combustivel",
-            "valor": 120,
-            "data": "20/12/2023"
-        },
-        {
-            "id": 7,
-            "descricao": "Material escolar",
-            "valor": 200,
-            "data": "21/01/2024"
-        },
-        {
-            "id": 8,
-            "descricao": "restaurante",
-            "valor": 140,
-            "data": "25/02/2024"
-        },
-        {
-            "id": 9,
-            "descricao": "Farmacia",
-            "valor": 50,
-            "data": "12/03/2024"
-        }
-    ]
+  "usuario": [
+    {
+      "nome": "Ana",
+      "email": "ana@email.com",
+      "endereco": "Rua Bezerra de Menezes 16 apto 102",
+      "rendaMensal": 5000,
+      "id": "1"
+    }
+  ],
+  "despesas": [
+    {
+      "id": "73a7",
+      "descricao": "mercado",
+      "valor": 200,
+      "data": "2024-06-11"
+    },
+    {
+      "id": "a3a6",
+      "descricao": "farmacia",
+      "valor": 200,
+      "data": "2024-06-11"
+    },
+    {
+      "id": "7f32",
+      "descricao": "posto",
+      "valor": 100,
+      "data": "2024-06-11"
+    },
+    {
+      "id": "7d2b",
+      "descricao": "restaurante",
+      "valor": 100,
+      "data": "2024-06-11"
+    },
+    {
+      "id": "41a7",
+      "descricao": "teste",
+      "valor": 100,
+      "data": "2024-06-11"
+    },
+    {
+      "id": "31d0",
+      "descricao": "fds",
+      "valor": 300,
+      "data": "2024-06-13"
+    },
+    {
+      "id": "5281",
+      "descricao": "teste ",
+      "valor": 50,
+      "data": "2024-06-11"
+    }
+  ]
 }
