@@ -1,9 +1,9 @@
 {
   "usuario": [
     {
-      "nome": "Ana",
-      "email": "ana@email.com",
-      "endereco": "Rua Bezerra de Menezes 16 apto 102",
+      "nome": "Usuario",
+      "email": "usuario@email.com",
+      "endereco": "Rua Rio de Janeiro",
       "rendaMensal": 5000,
       "id": "1"
     }
@@ -13,42 +13,6 @@
       "id": "73a7",
       "descricao": "mercado",
       "valor": 200,
-      "data": "2024-06-11"
-    },
-    {
-      "id": "a3a6",
-      "descricao": "farmacia",
-      "valor": 200,
-      "data": "2024-06-11"
-    },
-    {
-      "id": "7f32",
-      "descricao": "posto",
-      "valor": 100,
-      "data": "2024-06-11"
-    },
-    {
-      "id": "7d2b",
-      "descricao": "restaurante",
-      "valor": 100,
-      "data": "2024-06-11"
-    },
-    {
-      "id": "41a7",
-      "descricao": "teste",
-      "valor": 100,
-      "data": "2024-06-11"
-    },
-    {
-      "id": "31d0",
-      "descricao": "fds",
-      "valor": 300,
-      "data": "2024-06-13"
-    },
-    {
-      "id": "5281",
-      "descricao": "teste ",
-      "valor": 50,
       "data": "2024-06-11"
     }
   ]
